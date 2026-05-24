@@ -20,12 +20,13 @@ function Accordion({
 
 function AccordionItem({
   className,
-  value: _value,
+  value,
   ...props
 }: React.DetailsHTMLAttributes<HTMLDetailsElement> & { readonly value?: string }) {
   return (
     <details
       data-slot="accordion-item"
+      data-value={value}
       className={cn("group/accordion-item not-last:border-b", className)}
       {...props}
     />
