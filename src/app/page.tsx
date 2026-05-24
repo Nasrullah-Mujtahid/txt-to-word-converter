@@ -12,7 +12,6 @@ import {
   type ChangeEvent,
   type DragEvent,
   useMemo,
-  useRef,
   useState,
 } from "react";
 
@@ -127,7 +126,6 @@ const saveBlob = (blob: Blob, fileName: string): void => {
 };
 
 export default function Home() {
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const [text, setText] = useState(defaultText);
   const [fileName, setFileName] = useState("converted-document");
   const [documentTitle, setDocumentTitle] = useState("Converted Document");
@@ -178,7 +176,7 @@ export default function Home() {
     event.target.value = "";
   };
 
-  const handleDrop = async (event: DragEvent<HTMLDivElement>): Promise<void> => {
+  const handleDrop = async (event: DragEvent<HTMLLabelElement>): Promise<void> => {
     event.preventDefault();
     setIsDragging(false);
 
@@ -349,7 +347,8 @@ export default function Home() {
             </div>
           </div>
 
-          <div
+          <Label
+            htmlFor="txt-upload"
             className={`group flex min-h-96 cursor-pointer flex-col items-center justify-center rounded-[2rem] border border-dashed p-8 text-center transition ${
               isDragging
                 ? "border-cyan-400 bg-cyan-50 shadow-2xl shadow-cyan-300/30"
@@ -363,8 +362,8 @@ export default function Home() {
             <Input
               accept=".txt,text/plain"
               className="sr-only"
+              id="txt-upload"
               onChange={handleFileChange}
-              ref={fileInputRef}
               type="file"
             />
             <span className="mb-6 grid h-24 w-24 place-items-center rounded-[1.75rem] bg-slate-950 text-3xl font-black text-white shadow-2xl shadow-slate-950/30 transition group-hover:scale-105">
@@ -377,14 +376,10 @@ export default function Home() {
               Drag and drop your .txt file here or click to browse. The live
               preview updates immediately after upload.
             </span>
-            <Button
-              className="mt-6 rounded-full px-6 py-3 shadow-lg shadow-slate-950/20"
-              onClick={() => fileInputRef.current?.click()}
-              type="button"
-            >
+            <span className="mt-6 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-slate-950/20 transition group-hover:-translate-y-0.5">
               Select TXT File
-            </Button>
-          </div>
+            </span>
+          </Label>
         </section>
 
         <section className="mt-8 grid gap-5 lg:grid-cols-[0.78fr_1.22fr]">
@@ -658,7 +653,7 @@ export default function Home() {
             </h2>
           </div>
 
-          <Accordion className="mt-8 grid gap-4" type="single" collapsible>
+          <Accordion className="mt-8 grid gap-4">
             {faqItems.map((item) => (
               <AccordionItem
                 className="rounded-3xl border border-slate-200 bg-white px-6 shadow-sm"
